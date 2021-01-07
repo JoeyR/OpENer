@@ -73,7 +73,7 @@ INCLUDE( ${OpENer_BUILDSUPPORT_DIR}/OpENer_function_checks.cmake )
 #######################################
 # OpENer tracer switches              #
 #######################################
-set( OpENer_TRACES OFF CACHE BOOL "Activate OpENer traces" )
+set( OpENer_TRACES ON CACHE BOOL "Activate OpENer traces" )
 if(OpENer_TRACES)
   createTraceLevelOptions()
 endif(OpENer_TRACES)
