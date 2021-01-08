@@ -27,5 +27,5 @@
 
 	// Comment out this line to run as root instead.
 	//"remoteUser": "vscode"
-	//"postCreateCommand": "pwd && cd bin/posix && ./setup_posix.sh"
+	//"postCreateCommand": "scripts/run.sh"
 }

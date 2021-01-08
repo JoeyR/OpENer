@@ -2,9 +2,9 @@
   "version": "2.0.0",
   "tasks": [
       {
-          "label": "Build Main",
+          "label": "build OpENer",
           "type": "shell",
-          "command": "g++ -g main.cpp -o main.out",
+          "command": "cd bin/posix && ./setup_posix.sh",
           "group": {
               "kind": "build",
               "isDefault": true

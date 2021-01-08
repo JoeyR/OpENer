@@ -5,8 +5,8 @@
           "name": "Launch Main",
           "type": "cppdbg",
           "request": "launch",
-          "program": "${workspaceFolder}/main.out",
-          "args": [],
+          "program": "${workspaceFolder}/bin/posix/src/ports/POSIX/OpENer",
+          "args": ["eth0"],
           "stopAtEntry": false,
           "cwd": "${workspaceFolder}",
           "environment": [],
@@ -19,7 +19,7 @@
                   "ignoreFailures": true
               }
           ],
-          "preLaunchTask": "Build Main"
+          "preLaunchTask": "build OpENer"
       }
   ]
 }
