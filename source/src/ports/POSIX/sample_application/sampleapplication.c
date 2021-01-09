@@ -113,18 +113,18 @@ EipStatus ApplicationInitialization(void) {
 void HandleApplication(void) {
   /* check if application needs to trigger an connection */
 
-  srand(time(NULL));  // Initialization, should only be called once.
+  // srand(time(NULL));  // Initialization, should only be called once.
 
-  g_assembly_data06B[0] = (EipUint16)rand();
-  g_assembly_data06B[1] = (EipUint16)rand();
-  g_assembly_data06B[2] = (EipUint16)rand();
-  g_assembly_data06B[3] = (EipUint16)rand();
-  g_assembly_data06B[4] = (EipUint16)rand();
-  g_assembly_data06B[5] = (EipUint16)rand();
-  g_assembly_data06B[6] = (EipUint16)rand();
-  g_assembly_data06B[7] = (EipUint16)rand();
-  g_assembly_data06B[8] = (EipUint16)rand();
-  g_assembly_data06B[9] = (EipUint16)rand();
+  // g_assembly_data06B[0] = (EipUint16)rand();
+  // g_assembly_data06B[1] = (EipUint16)rand();
+  // g_assembly_data06B[2] = (EipUint16)rand();
+  // g_assembly_data06B[3] = (EipUint16)rand();
+  // g_assembly_data06B[4] = (EipUint16)rand();
+  // g_assembly_data06B[5] = (EipUint16)rand();
+  // g_assembly_data06B[6] = (EipUint16)rand();
+  // g_assembly_data06B[7] = (EipUint16)rand();
+  // g_assembly_data06B[8] = (EipUint16)rand();
+  // g_assembly_data06B[9] = (EipUint16)rand();
 }
 
 void CheckIoConnectionEvent(unsigned int output_assembly_id,
