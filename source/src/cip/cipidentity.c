@@ -121,7 +121,6 @@ void CipIdentityClearStatusFlags(const CipWord status_flags) {
  */
 void CipIdentitySetExtendedDeviceStatus(
   CipIdentityExtendedStatus extended_status) {
-  OPENER_TRACE_INFO("Setting extended status: %x\n", extended_status);
   g_identity.ext_status = extended_status & kExtStatusMask;
   MergeStatusAndExtStatus();
 }
