@@ -863,7 +863,6 @@ EipStatus HandleReceivedIoConnectionData(CipConnectionObject *connection_object,
                                          const EipUint8 *data,
                                          EipUint16 data_length) {
 
-  OPENER_TRACE_INFO("Starting data length: %d\n", data_length);
   bool no_new_data = false;
 /* check class 1 sequence number*/
   if(kConnectionObjectTransportClassTriggerTransportClass1 ==
@@ -878,12 +877,10 @@ EipStatus HandleReceivedIoConnectionData(CipConnectionObject *connection_object,
     data_length -= 2;
   }
 
-  OPENER_TRACE_INFO("data length after sequence count: %d\n", data_length);
   if(data_length > 0) {
     /* we have no heartbeat connection */
 #ifdef OPENER_CONSUMED_DATA_HAS_RUN_IDLE_HEADER
     EipUint32 nRunIdleBuf = GetUdintFromMessage( &(data) );
-    OPENER_TRACE_INFO("Run/Idle handler: 0x%x\n", nRunIdleBuf);
     const uint32_t kRunBitMask = 0x0001;
     if( (kRunBitMask & nRunIdleBuf) == 1 ) {
       CipIdentitySetExtendedDeviceStatus(kAtLeastOneIoConnectionInRunMode);

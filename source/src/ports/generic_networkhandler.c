@@ -554,7 +554,6 @@ void CheckAndHandleUdpUnicastSocket(void) {
 
 EipStatus SendUdpData(const struct sockaddr_in *const address, const int socket_handle, const ENIPMessage *const outgoing_message) {
 
-  OPENER_TRACE_INFO("UDP port to be sent to: %x\n", ntohs(address->sin_port) );
   UDPHeader header = { .source_port = 2222, .destination_port = ntohs(address->sin_port), .packet_length = kUdpHeaderLength
     + outgoing_message->used_message_length, .checksum = 0 };
 
@@ -926,7 +925,6 @@ void CheckAndHandleConsumingUdpSockets(void) {
 
     if((kEipInvalidSocket != current_connection_object->socket[kUdpCommuncationDirectionConsuming])
       && (true == CheckSocketSet(current_connection_object->socket[kUdpCommuncationDirectionConsuming]))) {
-      OPENER_TRACE_INFO("Processing UDP consuming message\n");
       struct sockaddr_in from_address = { 0 };
       socklen_t from_address_length = sizeof(from_address);
       CipOctet incoming_message[PC_OPENER_ETHERNET_BUFFER_SIZE] = { 0 };

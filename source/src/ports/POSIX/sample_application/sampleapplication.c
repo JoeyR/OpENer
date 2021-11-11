@@ -121,12 +121,12 @@ void ZoneConveyOut(Zone* cur_zone);
 
 void PrintZoneState() {
   for (int i = 0; i < MAX_ZONES; i++) {
-    OPENER_TRACE_INFO("ZONE : %d\n", i + 1);
     pthread_mutex_lock(&g_zones[i].mutex);
-    OPENER_TRACE_INFO("OCCUPIED : %d\n", g_zones[i].occupied);
-    OPENER_TRACE_INFO("SENSOR : %d\n", g_zones[i].sensor);
+    OPENER_TRACE_INFO("ZONE : %d OCCUPIED : %d SENSOR: %d ", i + 1, g_zones[i].occupied
+      , g_zones[i].sensor);
     pthread_mutex_unlock(&g_zones[i].mutex);
   }
+  OPENER_TRACE_INFO("\n");
 }
 
 EipBool8 ShouldExit() {
@@ -148,9 +148,7 @@ void* ConveyOutThread(void* arg) {
     pthread_mutex_unlock(&g_zone_lock);
 
     pthread_mutex_lock(&g_convey_out_lock);
-    OPENER_TRACE_INFO("Device waiting for convey out signal\n");
     pthread_cond_wait(&g_convey_out_cond, &g_convey_out_lock);
-    OPENER_TRACE_INFO("Device recieved convey out signal\n");
     pthread_mutex_unlock(&g_convey_out_lock);
 
     // Check if the thread should exit because we got 
@@ -194,6 +192,7 @@ void* ConveyOutThread(void* arg) {
       }
 
     } while (prev_zone >= FIRST_ZONE);
+    PrintZoneState();
   }
 }
 
@@ -206,9 +205,7 @@ void* ConveyInThread(void* arg) {
     pthread_mutex_unlock(&g_zone_lock);
 
     pthread_mutex_lock(&g_lock);
-    OPENER_TRACE_INFO("Device waiting for convey in signal\n");
     pthread_cond_wait(&g_cond, &g_lock);
-    OPENER_TRACE_INFO("Device recieved convey in signal\n");
     pthread_mutex_unlock(&g_lock);
 
     pthread_mutex_lock(&g_zone_lock);
@@ -219,7 +216,6 @@ void* ConveyInThread(void* arg) {
       pthread_exit(NULL);
     }
 
-    OPENER_TRACE_INFO("The worker thread is running\n");
     if (g_zones[FIRST_ZONE].occupied == true) {
       OPENER_TRACE_ERR("The Zones are all occupied, package will fall off");
       continue;
@@ -249,6 +245,7 @@ void* ConveyInThread(void* arg) {
         break;
       }
     }  
+    PrintZoneState();
   }
 
   pthread_exit(NULL);
@@ -415,11 +412,9 @@ EipStatus AfterAssemblyDataReceived(CipInstance *instance) {
       // If convey out signal is high give preference to convey out
       // over convey in.
       if (g_assembly_data096.handshake_signals_overwrite & (1 << 1)) {
-        OPENER_TRACE_INFO("Recieved Convey out signal");
         pthread_cond_signal(&g_convey_out_cond);
       }
       if (g_assembly_data096.handshake_signals_overwrite & (1 << 0)) {
-        OPENER_TRACE_INFO("Recieved Convey in signal");
         pthread_cond_signal(&g_cond);
       }
       uint8_t result = 0;
@@ -442,9 +437,6 @@ EipStatus AfterAssemblyDataReceived(CipInstance *instance) {
       g_assembly_data064.handshake_signals |= (g_zones[LAST_ZONE].occupied == 1) ?  (1 << 5) : 0;
       pthread_mutex_unlock(&g_zones[LAST_ZONE].mutex);
       
-      PrintZoneState();
-      OPENER_TRACE_INFO("Sensor State : %d\n", g_assembly_data064.sensors); 
-      OPENER_TRACE_INFO("Hand shake signals : %d\n", g_assembly_data064.handshake_signals); 
       break;
     case INTERROLL_DEVICE_EXPLICT_ASSEMBLY_NUM:
       /* do something interesting with the new data from
@@ -517,7 +509,6 @@ void *CipCalloc(size_t number_of_elements, size_t size_of_element) {
 void CipFree(void *data) { free(data); }
 
 void RunIdleChanged(EipUint32 run_idle_value) {
-  OPENER_TRACE_INFO("Run/Idle handler triggered\n");
   if ((0x0001 & run_idle_value) == 1) {
     CipIdentitySetExtendedDeviceStatus(kAtLeastOneIoConnectionInRunMode);
   } else {
